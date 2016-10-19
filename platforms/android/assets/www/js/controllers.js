@@ -48,10 +48,20 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('eventoInvitadoCtrl', ['$scope', '$stateParams', '$cordovaCamera', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('eventoInvitadoCtrl', ['$scope', '$stateParams', '$cordovaCamera', 'firebase', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $cordovaCamera) {
+function ($scope, $stateParams, $cordovaCamera, firebase) {
+  var config = {
+    apiKey: 'tusfotos-ce784',
+    authDomain: 'tusfotos-ce784',
+    databaseURL: 'https://tusfotos-ce784.firebaseio.com/',
+    storageBucket: 'gs://tusfotos-ce784.appspot.com'
+  };
+  firebase.initializeApp(config);
+  var storageRef = firebase.storage().ref();
+  var eventoRef = storageRef.child(eventoId )
+  $scope.imagenes = [];
   $scope.tomarFoto = function () {
       var options = {
            quality : 75,
@@ -66,9 +76,14 @@ function ($scope, $stateParams, $cordovaCamera) {
        };
        $cordovaCamera.getPicture(options).then(function(imageData) {
             console.log(imageData);
-        }, function(error) {
-            console.error(error);
-        });
+            eventoRef.putString(imageData, 'base64').then(function(snapshot) {
+              console.log(snapshot.downloadURL);
+              $scope.imagenes.push({titulo: "Nueva Imagen", src: snapshot.downloadURL});
+            });
+            $scope.apply();
+          }, function(err) {
+            alert(err);
+          });
   }
 
 }])
