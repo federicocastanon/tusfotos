@@ -60,6 +60,7 @@ function ($scope, $stateParams, $cordovaCamera, firebase) {
   };
   firebase.initializeApp(config);
   var storageRef = firebase.storage().ref();
+  var eventoId = "1";
   var eventoRef = storageRef.child(eventoId )
   $scope.imagenes = [];
   $scope.tomarFoto = function () {
