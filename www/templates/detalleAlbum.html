@@ -3,13 +3,21 @@
         <div id="detalleAlbum-markdown9" style="color:#000000;">
             <p>Seleccioná las que quieras para descargar o imprimir</p>
         </div>
+        <ion-item ng-repeat="item in fotos" ng-click="seleccionar(item.key)" >
+         <div id="detalleColaborador-markdown6" style="color:#000000;">
+            <p>{{item.key.titulo}}</p>
+        </div>
+        
         <div>
-            <img src="img/rU9uOhMReOzimQezknDw_fiesta_1247_980x560.jpg" width="100%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">
+            <img ng-src="{{pathForImage(item.key)}}"width="100%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">
         </div>
         <div id="detalleAlbum-markdown10" style="color:#000000;">
             <p>
-                <strong>Tamaño:</strong>1920x1080
-                <strong>Fecha:</strong>12 de Septimebre de 2016</p>
+                <strong>Tamaño:</strong>{{item.key.tamanio}} <br/>
+                <strong>Fecha:</strong>{{item.key.fecha}}</p>
         </div>
+       </ion-item >
+       <h2 ng-if="fotos.length < 1 || !fotos"><i>No se han seleccionado fotos para este album todavia</i></h2>
+        
     </ion-content>
 </ion-view>
